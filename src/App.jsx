@@ -668,8 +668,10 @@ export default function App() {
       </div>
 
       {/* SIDEBAR (Responsive & Scrollable) */}
-      <div className={`w-64 md:w-72 text-white h-screen p-5 flex flex-col fixed left-0 top-0 z-50 overflow-y-auto transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 ${userRole === 'pasien' ? 'bg-blue-800' : 'bg-slate-900'}`}>
-        <div className="flex items-center justify-between mb-8 px-2 py-2">
+      <div className={`w-64 md:w-72 text-white h-[100dvh] flex flex-col fixed left-0 top-0 z-50 transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 ${userRole === 'pasien' ? 'bg-blue-800' : 'bg-slate-900'}`}>
+        
+        {/* Sidebar Header */}
+        <div className="flex flex-shrink-0 items-center justify-between p-5 mb-2">
           <div className="flex items-center gap-3">
             <div className="bg-white/10 p-2 rounded-lg"><Stethoscope size={24} className="text-blue-200" /></div>
             <div><h1 className="text-xl font-bold">Pakar THT</h1><p className="text-[10px] uppercase tracking-widest opacity-50 font-semibold">Naïve Bayes</p></div>
@@ -677,27 +679,30 @@ export default function App() {
           <button onClick={() => setIsSidebarOpen(false)} className="md:hidden p-2 hover:bg-white/10 rounded-full"><X size={18}/></button>
         </div>
 
-        <nav className="flex flex-col gap-2 flex-grow text-white">
-          {userRole === 'pasien' ? (
-            <>
-              <button onClick={() => { setActivePatientTab('dashboard'); setIsSidebarOpen(false); }} className={`flex items-center gap-4 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${activePatientTab === 'dashboard' ? 'bg-white/10 shadow-inner' : 'hover:bg-white/5 opacity-70 hover:opacity-100'}`}><LayoutDashboard size={18}/> Konsultasi</button>
-              <button onClick={() => { setActivePatientTab('riwayat'); setIsSidebarOpen(false); }} className={`flex items-center gap-4 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${activePatientTab === 'riwayat' ? 'bg-white/10 shadow-inner' : 'hover:bg-white/5 opacity-70 hover:opacity-100'}`}><List size={18}/> Riwayat Saya</button>
-            </>
-          ) : (
-            [
-              { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={18}/> },
-              { id: 'gejala', label: 'Data Gejala', icon: <Activity size={18}/> },
-              { id: 'penyakit', label: 'Data Penyakit', icon: <Stethoscope size={18}/> },
-              { id: 'aturan', label: 'Basis Aturan', icon: <Settings size={18}/> },
-              { id: 'riwayat', label: 'Riwayat Konsultasi', icon: <List size={18}/> },
-            ].map(item => (
-              <button key={item.id} onClick={() => { setActiveAdminTab(item.id); setIsSidebarOpen(false); }} className={`flex items-center gap-4 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${activeAdminTab === item.id ? 'bg-blue-600 shadow-md text-white' : 'hover:bg-white/5 opacity-60 hover:opacity-100'}`}>{item.icon} {item.label}</button>
-            ))
-          )}
-        </nav>
+        {/* Sidebar Nav Items (Scrollable) */}
+        <div className="flex-grow overflow-y-auto px-5 pb-4 scrollbar-thin">
+          <nav className="flex flex-col gap-2 text-white">
+            {userRole === 'pasien' ? (
+              <>
+                <button onClick={() => { setActivePatientTab('dashboard'); setIsSidebarOpen(false); }} className={`flex items-center gap-4 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${activePatientTab === 'dashboard' ? 'bg-white/10 shadow-inner' : 'hover:bg-white/5 opacity-70 hover:opacity-100'}`}><LayoutDashboard size={18}/> Konsultasi</button>
+                <button onClick={() => { setActivePatientTab('riwayat'); setIsSidebarOpen(false); }} className={`flex items-center gap-4 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${activePatientTab === 'riwayat' ? 'bg-white/10 shadow-inner' : 'hover:bg-white/5 opacity-70 hover:opacity-100'}`}><List size={18}/> Riwayat Saya</button>
+              </>
+            ) : (
+              [
+                { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={18}/> },
+                { id: 'gejala', label: 'Data Gejala', icon: <Activity size={18}/> },
+                { id: 'penyakit', label: 'Data Penyakit', icon: <Stethoscope size={18}/> },
+                { id: 'aturan', label: 'Basis Aturan', icon: <Settings size={18}/> },
+                { id: 'riwayat', label: 'Riwayat Konsultasi', icon: <List size={18}/> },
+              ].map(item => (
+                <button key={item.id} onClick={() => { setActiveAdminTab(item.id); setIsSidebarOpen(false); }} className={`flex items-center gap-4 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${activeAdminTab === item.id ? 'bg-blue-600 shadow-md text-white' : 'hover:bg-white/5 opacity-60 hover:opacity-100'}`}>{item.icon} {item.label}</button>
+              ))
+            )}
+          </nav>
+        </div>
 
-        {/* Footer Sidebar padding bottom extra to ensure visible while scrolling */}
-        <div className="mt-8 pt-4 pb-4 border-t border-white/10">
+        {/* Sidebar Footer (Always visible at bottom) */}
+        <div className="p-5 pb-8 sm:pb-5 border-t border-white/10 flex-shrink-0">
            <button onClick={handleLogout} className="flex items-center gap-4 px-4 py-3 w-full rounded-xl text-sm font-bold text-red-300 hover:bg-red-500/20 transition-all"><LogOut size={18}/> Keluar Sistem</button>
         </div>
       </div>
